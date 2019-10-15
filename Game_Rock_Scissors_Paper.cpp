@@ -4,15 +4,13 @@
 #include <locale>
 #include <string>
 
-//using namespace std;
-
 const int MinRange = 0;
 const int MaxRange = 3;
 const std::string answers[] = { "Rock", "Scissors", "Paper" };
 
 // User = col; AI - rows
 // Rock, Scissors, Paper
-const int conparisons[3][3] = 
+const int comparisons[3][3] = 
 {
 	{ 0, 1, -1 },
 	{ -1, 0, 1 },
@@ -21,9 +19,9 @@ const int conparisons[3][3] =
 
 // Checks if user want so play
 // Return true if user wants to play; false otherwise
-bool doesUserWantsToPlay()
+bool DoesUserWantToPlay()
 {
-    bool rResult = false;
+    bool result = false;
 
     std::cout << "\nGame: Rock Scissors Paper " << std::endl;
 
@@ -36,24 +34,24 @@ bool doesUserWantsToPlay()
 
         if ((answer == "1") || (answer == "0"))
         {
-            rResult = (answer == "1");
+            result = (answer == "1");
             break;
         }
 
         std::cout << "Sorry, I did not understand." << std::endl;
     }
 
-    return rResult;
+    return result;
 }
 
 // The function generates a number from 1 to 3
-int GenetateRandomNamberOf()
+int GenetateRandomNumberOf()
 {
 	srand(time(NULL)| clock());
 	return MinRange + rand() % MaxRange;
 }
 
-//Ignore registr
+//Ignore case
 std::string ToLower(std::string input) 
 {
 	std::string output = std::string(input.length(), ' ');
@@ -70,11 +68,8 @@ int GetAnswerIndex(std::string choice)
 	int arrayLength = sizeof(answers) / sizeof(answers[0]);
 	
 	for (int i = 0; i < arrayLength; i++)
-	{
-		if (ToLower(choice) == ToLower(answers[i])){
+		if (ToLower(choice) == ToLower(answers[i]))
 			return i;
-		}
-	}
 	
 	return -1;
 }
@@ -84,22 +79,19 @@ bool IsAnswerValid(std::string answer)
 	int arrayLength = sizeof(answers) / sizeof(answers[0]);
 	
 	for (int i = 0; i < arrayLength; i++)
-	{
-		if (ToLower(answer) == ToLower(answers[i])){
+		if (ToLower(answer) == ToLower(answers[i]))
 			return true;
-		}
-	}
 	
 	return false;
 }
 
-void gameLoop(std::string MyChoise)
+void GameLoop(std::string myChoise)
 {
-	int rundNum = GenetateRandomNamberOf();
-	std::cout << "Computer - " << answers[rundNum] << std::endl;
+	int randomNumber = GenetateRandomNumberOf();
+	std::cout << "Computer - " << answers[randomNumber] << std::endl;
 	
-	int MyNumberOf = GetAnswerIndex(MyChoise);	
-	int gameResult = conparisons[rundNum][MyNumberOf];
+	int playerAnswer = GetAnswerIndex(myChoise);	
+	int gameResult = comparisons[randomNumber][playerAnswer];
 	
 	switch (gameResult)
 	{
@@ -119,34 +111,31 @@ void gameLoop(std::string MyChoise)
 	std::cout << "-------------------------";                                                                                                                                                         
 } 
 
-void playGeme()
+void PlayGame()
 {
 	bool endGame = true;
 	
 	do
 	{
-		std::string MyChoise;
+		std::string playerChoice;
 		std::cout << std::endl << "Enter Rock, Scissors or Paper:\n";
-		std::cin >> MyChoise;
+		std::cin >> playerChoice;
 		
-		if (!IsAnswerValid(MyChoise))
+		if (!IsAnswerValid(playerChoice))
 		{
 			std::cout << "Sorry, I did not understand." << std::endl;
 			break;
 		}
 	
-		gameLoop(MyChoise);
-
+		GameLoop(playerChoice);
 	}
 	while(!endGame);
-	
 }
 
 int main()
 {
-	while (doesUserWantsToPlay())
+	while (DoesUserWantToPlay())
 	{
-		playGeme();
+		PlayGame();
 	}
 }
-
